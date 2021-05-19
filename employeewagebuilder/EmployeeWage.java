@@ -2,107 +2,87 @@ package employeewagebuilder;
 import java.util.Random;
 import java.util.scanner;
 public class EmployeeWage {
+	public class EmpWage
+	{
+	    // class constants
+	    static final int PART_TIME = 1;
+	    static final int FULL_TIME = 2;
+	    // instance constants
+	    final String COMPANY_NAME;
+	    final int WAGE_PER_HR;
+	    final int MAX_WORKING_DAYS;
+	    final int MAX_WORKING_HRS;
+	    // instance variable
+	    int totalWage;
 
-	public static void main(String[] args) {
+	    EmpWage(String companyName, int wagePerHr, int maxWorkingDays, int maxWorkingHrs)
+	    {
+	        COMPANY_NAME = companyName;
+	        WAGE_PER_HR = wagePerHr;
+	        MAX_WORKING_DAYS = maxWorkingDays;
+	        MAX_WORKING_HRS = maxWorkingHrs;
+	        totalWage = 0;
+	    }
 
-		public static void main(String[] args)
-		static int WAGEPERHR;
-		static int MAXWORKINGHRS;
-		static int MAXWORKINGDAYS;
-		static int HALFDAYWORKINGHRS;
-		static int FULLDAYWORKINGHRS;
-		static String COMPANY_NAME;
+	    int getEmpType()
+	    {
+	        return (int) (Math.random() * 100) % 3;
+	    }
 
-		static int totalWorkingHrs=0;
+	    int getWorkingHrs(int empType)
+	    {
+	        switch (empType)
+	        {
+	            case FULL_TIME:
+	                return 8;
+	            case PART_TIME:
+	                return 4;
+	            default:
+	                return 0;
+	        }
+	    }
 
-		public EmloyeeWage()
-		{	
-			Scanner scan = new Scanner(System.in);
-			System.out.println("Enter the Company Name : ");
-			COMPANY_NAME=scan.next();
-			System.out.println("Enter the Companie's Maximun Working Days in a Month: ");
-			MAXWORKINGDAYS=scan.nextInt();
-			if(MAXWORKINGDAYS>31 || MAXWORKINGDAYS <1) 
-				System.out.println("Invalid Input Default Maximum Working Day in Month Set to 20 Day");
-			System.out.println("Enter Maximun Working Hours In a Month : ");
-			MAXWORKINGHRS=scan.nextInt();
-			System.out.println("Enter Half Day Working Hours : ");
-			HALFDAYWORKINGHRS=scan.nextInt();
-			System.out.println("Enter Full Day Working Hours : ");
-			FULLDAYWORKINGHRS=scan.nextInt();
-			System.out.println("Enter the Companie's Wage Per Hour : ");
-			WAGEPERHR=scan.nextInt();		
-		}
+	    void calculateTotalWage()
+	    {
+	        System.out.println("Computation of total wage of " + COMPANY_NAME + " employee");
+	        System.out.printf("%5s     %5s     %5s     %5s\n", "Day", "Workinghrs", "Wage", "Total working hrs");
+	        int workingHrs;
+	        for (int day = 1, totalWorkingHrs = 0; day <= MAX_WORKING_DAYS
+	                && totalWorkingHrs <= MAX_WORKING_HRS; day++, totalWorkingHrs += workingHrs)
+	        {
+	            int empType = getEmpType();
+	            workingHrs = getWorkingHrs(empType);
+	            int wage = workingHrs * WAGE_PER_HR;
+	            totalWage += wage;
+	            System.out.printf("%5d       %5d      %5d      %5d\n", day, workingHrs, wage, totalWorkingHrs + workingHrs);
+	        }
 
+	    }
 
-		static void attendanceSheet()
-		{
-			System.out.println("Welcome to Employee Wage Builder");
-			Random rand = new Random();
-			int WAGEPERHR=20;
-			int totalWorkinghr=0;
-			for(int day=1;day<=20;day++)
+	    public String toString()
+	    {
+	        System.out.println("Details of " + COMPANY_NAME + " employee");
+	        System.err.println("Wage per hour:" + WAGE_PER_HR);
+	        System.out.println("Maximum working days:" + MAX_WORKING_DAYS);
+	        System.out.println("Maximum working hours:" + MAX_WORKING_HRS);
+	        return "Total wage for a month of " + COMPANY_NAME + " employee is " + totalWage + "\n";
+	    }
 
+	    public static void main(String args[])
+	    {
+	        EmpWage dmart = new EmpWage("Dmart", 8, 20, 100);
+	        EmpWage reliance = new EmpWage("Reliance", 4, 30, 150);
+             
+	        dmart.calculateTotalWage();
+	        System.out.println(dmart);
 
-			for(int day=1;day<=MAXWORKINGDAYS;day++)
-			{			
-				int attendance=rand.nextInt(3);				
+	        reliance.calculateTotalWage();
+	        System.out.println(reliance);
 
-				switch(attendance);
-				attendance();
-				if (totalWorkingHrs>=MAXWORKINGHRS)
-				{
-					case 0:
-							totalWorkinghr+=0;
-							break;
-					case 1:
-							totalWorkinghr+=4;
-							break;
-					case 2:
-							totalWorkinghr+=8;
-				}
-
-				if (totalWorkinghr>=100)
-				{
-					totalWorkinghr=100;
-					totalWorkingHrs=MAXWORKINGHRS;
-					break;
-				}
-			}
-
-			System.out.println("Employee Earn : $" + totalWorkinghr*WAGEPERHR + " This Month." );
-
-
-		}
-
-		static void attendance()
-		{
-			Random rand = new Random();
-			int attendance=rand.nextInt(3);				
-			final int halfDay=1,fullDay=2;
-			switch(attendance)
-			{
-				case halfDay:
-					totalWorkingHrs+=HALFDAYWORKINGHRS;
-					break;
-				case fullDay:
-					totalWorkingHrs+=FULLDAYWORKINGHRS;
-			}
-		}
-
-		static void calculateSalary()
-		{
-			System.out.println("\nWelcome to Employee Wage Builder of "+COMPANY_NAME);
-			attendanceSheet();
-			System.out.println("Employee Earn : $" + totalWorkingHrs*WAGEPERHR + " This Month." );		
-		}
-
-		public static void main(String[] args)
-		{
-			EmloyeeWage Dmart=new EmloyeeWage();
-			Dmart.calculateSalary();
+	
 	}
 
 	}
+}
 
 
